@@ -2,15 +2,17 @@ name: Atualizar Dados da Planilha
 
 on:
   schedule:
-    - cron: '0 * * * *' # Roda a cada hora. Você pode mudar.
-  workflow_dispatch: # Permite que você rode manualmente clicando num botão
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   build:
+    permissions:         # <--- LINHA NOVA
+      contents: write    # <--- LINHA NOVA
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3 # Recomendo atualizar para v3
 
       - name: Baixar CSV da Planilha
         run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDy9G3kav6nR6IVpQ6-I-jt0daIrcMWtZNE3H6wakxOg639XTcuxc-pzOCrMIIdf2CVAvSBhLE1ADq/pub?output=csv" -o dados.csv
