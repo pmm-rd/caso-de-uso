@@ -2,83 +2,241 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Repositório de Casos de Uso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cases de Uso | RD</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
-        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        select, input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 8px; shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
-        .tag { background: #e0e0e0; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-right: 5px; }
-        .hidden { display: none; }
+        :root {
+            --azul-claro: #00c9eb;
+            --branco: #ffffff;
+            --ciano-escuro: #002233;
+            --roxo: #a34dff;
+            --rosa: #ff009e;
+            --laranja: #ff8900;
+            --cinza-fundo: #f0f4f7;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--cinza-fundo);
+            color: var(--ciano-escuro);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--ciano-escuro);
+            color: var(--branco);
+            padding: 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--azul-claro);
+        }
+
+        header h1 { margin: 0; font-size: 1.8rem; }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        /* Filtros */
+        .filters {
+            background: var(--branco);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 15px;
+            margin-top: -30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border: 1px solid #e1e8ed;
+        }
+
+        .filters input, .filters select {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .filters input:focus, .filters select:focus {
+            border-color: var(--azul-claro);
+        }
+
+        /* Grid e Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--branco);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            border-top: 6px solid var(--azul-claro);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin: 15px 0;
+            color: var(--ciano-escuro);
+            font-size: 1.3rem;
+            line-height: 1.2;
+        }
+
+        .tag-group { margin-bottom: 10px; }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 5px;
+        }
+
+        .tag-segmento { background: var(--roxo); color: white; }
+        .tag-produto { background: var(--laranja); color: white; }
+
+        .content-box {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-left: 4px solid #ddd;
+        }
+
+        .desafio { border-left-color: var(--rosa); }
+        .solucao { border-left-color: var(--azul-claro); }
+
+        .link-btn {
+            margin-top: auto;
+            text-align: center;
+            background: var(--azul-claro);
+            color: var(--ciano-escuro);
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: opacity 0.2s;
+        }
+
+        .link-btn:hover { opacity: 0.8; }
+
+        #loading { text-align: center; font-weight: bold; padding: 50px; }
     </style>
 </head>
 <body>
-    <h1>Casos de Uso</h1>
+
+<header>
+    <h1>🚀 Repositório de Sucesso do Cliente RD</h1>
+</header>
+
+<div class="container">
     <div class="filters">
-        <input type="text" id="search" placeholder="Buscar por título...">
-        <select id="filter-segmento"><option value="">Todos os Segmentos</option></select>
-        <select id="filter-produto"><option value="">Todos os Produtos</option></select>
+        <input type="text" id="search" placeholder="🔍 Buscar por título ou palavra-chave...">
+        <select id="filter-segmento"><option value="">🏢 Todos os Segmentos</option></select>
+        <select id="filter-produto"><option value="">🛠️ Todos os Produtos</option></select>
     </div>
-    <div id="container" class="grid">Carregando dados...</div>
 
-    <script>
-        const CSV_URL = 'dados.csv'; // O GitHub Action vai salvar o arquivo com este nome
-        let allData = [];
+    <div id="container" class="grid">
+        <div id="loading">Buscando casos de uso...</div>
+    </div>
+</div>
 
-        Papa.parse(CSV_URL, {
-            download: true, header: true,
-            complete: function(results) {
-                allData = results.data.filter(row => row.Título);
-                renderFilters(allData);
-                renderCards(allData);
-            }
+<script>
+    const CSV_URL = 'dados.csv';
+    let allData = [];
+
+    Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        complete: function(results) {
+            // Filtra linhas vazias
+            allData = results.data.filter(row => row.Título && row.Título.trim() !== "");
+            renderFilters(allData);
+            renderCards(allData);
+        }
+    });
+
+    function renderFilters(data) {
+        const segmentos = [...new Set(data.map(item => item.Segmento).filter(Boolean))];
+        const produtos = [...new Set(data.map(item => item['Produto usado']).filter(Boolean))];
+        
+        const segSelect = document.getElementById('filter-segmento');
+        const prodSelect = document.getElementById('filter-produto');
+
+        segmentos.forEach(val => segSelect.innerHTML += `<option value="${val}">${val}</option>`);
+        produtos.forEach(val => prodSelect.innerHTML += `<option value="${val}">${val}</option>`);
+    }
+
+    function renderCards(data) {
+        const container = document.getElementById('container');
+        const search = document.getElementById('search').value.toLowerCase();
+        const seg = document.getElementById('filter-segmento').value;
+        const prod = document.getElementById('filter-produto').value;
+
+        container.innerHTML = '';
+
+        const filtered = data.filter(item => {
+            const matchesSearch = item.Título.toLowerCase().includes(search) || 
+                                 item['Desafio Inicial'].toLowerCase().includes(search);
+            const matchesSeg = !seg || item.Segmento === seg;
+            const matchesProd = !prod || item['Produto usado'] === prod;
+            return matchesSearch && matchesSeg && matchesProd;
         });
 
-        function renderFilters(data) {
-            const segmentos = [...new Set(data.map(item => item.Segmento))];
-            const produtos = [...new Set(data.map(item => item['Produto usado']))];
-            
-            const fillSelect = (id, list) => {
-                const sel = document.getElementById(id);
-                list.forEach(val => { if(val) sel.innerHTML += `<option value="${val}">${val}</option>`; });
-            };
-            fillSelect('filter-segmento', segmentos);
-            fillSelect('filter-produto', produtos);
+        if (filtered.length === 0) {
+            container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Nenhum caso encontrado para essa busca. 🔍</p>';
+            return;
         }
 
-        function renderCards(data) {
-            const container = document.getElementById('container');
-            const search = document.getElementById('search').value.toLowerCase();
-            const seg = document.getElementById('filter-segmento').value;
-            const prod = document.getElementById('filter-produto').value;
+        filtered.forEach(item => {
+            container.innerHTML += `
+                <div class="card">
+                    <div class="tag-group">
+                        <span class="tag tag-segmento">${item.Segmento}</span>
+                        <span class="tag tag-produto">${item['Produto usado']}</span>
+                    </div>
+                    <h3>${item.Título}</h3>
+                    
+                    <div class="content-box desafio">
+                        <strong>❌ Desafio:</strong><br>
+                        ${item['Desafio Inicial']}
+                    </div>
+                    
+                    <div class="content-box solucao">
+                        <strong>✅ Solução RD:</strong><br>
+                        ${item['Solução usada']}
+                    </div>
 
-            container.innerHTML = '';
-            data.forEach(item => {
-                const matchesSearch = item.Título.toLowerCase().includes(search);
-                const matchesSeg = !seg || item.Segmento === seg;
-                const matchesProd = !prod || item['Produto usado'] === prod;
-
-                if (matchesSearch && matchesSeg && matchesProd) {
-                    container.innerHTML += `
-                        <div class="card">
-                            <span class="tag">${item.Segmento}</span>
-                            <span class="tag">${item['Produto usado']}</span>
-                            <h3>${item.Título}</h3>
-                            <p><strong>Desafio:</strong> ${item['Desafio Inicial']}</p>
-                            <p><strong>Solução:</strong> ${item['Solução usada']}</p>
-                            <a href="${item['Link do Post']}" target="_blank">Ver Post Completo</a>
-                        </div>
-                    `;
-                }
-            });
-        }
-
-        document.querySelectorAll('.filters input, .filters select').forEach(el => {
-            el.addEventListener('change', () => renderCards(allData));
-            el.addEventListener('keyup', () => renderCards(allData));
+                    <a href="${item['Link do Post']}" target="_blank" class="link-btn">Ler post completo</a>
+                </div>
+            `;
         });
-    </script>
+    }
+
+    // Eventos para busca em tempo real
+    document.getElementById('search').addEventListener('input', () => renderCards(allData));
+    document.getElementById('filter-segmento').addEventListener('change', () => renderCards(allData));
+    document.getElementById('filter-produto').addEventListener('change', () => renderCards(allData));
+</script>
+
 </body>
 </html>
