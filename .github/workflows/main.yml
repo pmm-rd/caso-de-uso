@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Baixar CSV da Planilha
-        run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDy9G3kav6nR6IVpQ6-I-jt0daIrcMWtZNE3H6wakxOg639XTcuxc-pzOCrMIIdf2CVAvSBhLE1ADq/pubhtml" -o dados.csv
+        run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDy9G3kav6nR6IVpQ6-I-jt0daIrcMWtZNE3H6wakxOg639XTcuxc-pzOCrMIIdf2CVAvSBhLE1ADq/pub?output=csv" -o dados.csv
 
       - name: Commit e Push dos novos dados
         run: |
