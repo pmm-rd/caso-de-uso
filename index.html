@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Repositório de Casos de Uso</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; }
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        select, input { padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 8px; shadow: 0 2px 5px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        .tag { background: #e0e0e0; padding: 2px 8px; border-radius: 10px; font-size: 0.8em; margin-right: 5px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h1>Casos de Uso</h1>
+    <div class="filters">
+        <input type="text" id="search" placeholder="Buscar por título...">
+        <select id="filter-segmento"><option value="">Todos os Segmentos</option></select>
+        <select id="filter-produto"><option value="">Todos os Produtos</option></select>
+    </div>
+    <div id="container" class="grid">Carregando dados...</div>
+
+    <script>
+        const CSV_URL = 'dados.csv'; // O GitHub Action vai salvar o arquivo com este nome
+        let allData = [];
+
+        Papa.parse(CSV_URL, {
+            download: true, header: true,
+            complete: function(results) {
+                allData = results.data.filter(row => row.Título);
+                renderFilters(allData);
+                renderCards(allData);
+            }
+        });
+
+        function renderFilters(data) {
+            const segmentos = [...new Set(data.map(item => item.Segmento))];
+            const produtos = [...new Set(data.map(item => item['Produto usado']))];
+            
+            const fillSelect = (id, list) => {
+                const sel = document.getElementById(id);
+                list.forEach(val => { if(val) sel.innerHTML += `<option value="${val}">${val}</option>`; });
+            };
+            fillSelect('filter-segmento', segmentos);
+            fillSelect('filter-produto', produtos);
+        }
+
+        function renderCards(data) {
+            const container = document.getElementById('container');
+            const search = document.getElementById('search').value.toLowerCase();
+            const seg = document.getElementById('filter-segmento').value;
+            const prod = document.getElementById('filter-produto').value;
+
+            container.innerHTML = '';
+            data.forEach(item => {
+                const matchesSearch = item.Título.toLowerCase().includes(search);
+                const matchesSeg = !seg || item.Segmento === seg;
+                const matchesProd = !prod || item['Produto usado'] === prod;
+
+                if (matchesSearch && matchesSeg && matchesProd) {
+                    container.innerHTML += `
+                        <div class="card">
+                            <span class="tag">${item.Segmento}</span>
+                            <span class="tag">${item['Produto usado']}</span>
+                            <h3>${item.Título}</h3>
+                            <p><strong>Desafio:</strong> ${item['Desafio Inicial']}</p>
+                            <p><strong>Solução:</strong> ${item['Solução usada']}</p>
+                            <a href="${item['Link do Post']}" target="_blank">Ver Post Completo</a>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        document.querySelectorAll('.filters input, .filters select').forEach(el => {
+            el.addEventListener('change', () => renderCards(allData));
+            el.addEventListener('keyup', () => renderCards(allData));
+        });
+    </script>
+</body>
+</html>
