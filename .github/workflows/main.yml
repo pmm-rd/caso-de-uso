@@ -1,0 +1,24 @@
+name: Atualizar Dados da Planilha
+
+on:
+  schedule:
+    - cron: '0 * * * *' # Roda a cada hora. Você pode mudar.
+  workflow_dispatch: # Permite que você rode manualmente clicando num botão
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v2
+
+      - name: Baixar CSV da Planilha
+        run: curl -L "https://docs.google.com/spreadsheets/d/e/2PACX-1vRDy9G3kav6nR6IVpQ6-I-jt0daIrcMWtZNE3H6wakxOg639XTcuxc-pzOCrMIIdf2CVAvSBhLE1ADq/pubhtml" -o dados.csv
+
+      - name: Commit e Push dos novos dados
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add dados.csv
+          git commit -m "Atualizando dados da planilha" || exit 0
+          git push
