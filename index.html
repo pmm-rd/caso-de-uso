@@ -1,242 +1,660 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cases de Uso | RD</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    <style>
-        :root {
-            --azul-claro: #00c9eb;
-            --branco: #ffffff;
-            --ciano-escuro: #002233;
-            --roxo: #a34dff;
-            --rosa: #ff009e;
-            --laranja: #ff8900;
-            --cinza-fundo: #f0f4f7;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cases de Uso | RD Station</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--cinza-fundo);
-            color: var(--ciano-escuro);
-            margin: 0;
-            padding: 0;
-        }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        header {
-            background-color: var(--ciano-escuro);
-            color: var(--branco);
-            padding: 2rem;
-            text-align: center;
-            border-bottom: 4px solid var(--azul-claro);
-        }
+:root {
+  --navy:    #002233;
+  --navy2:   #00344f;
+  --azul:    #00c9eb;
+  --azul2:   #00a8c7;
+  --roxo:    #a34dff;
+  --verde:   #00c48c;
+  --rosa:    #ff3e7f;
+  --laranja: #ff8900;
+  --cinza:   #f0f4f8;
+  --borda:   #dde4ec;
+  --texto:   #0f1f2b;
+  --suave:   #5a7080;
+  --branco:  #ffffff;
+}
 
-        header h1 { margin: 0; font-size: 1.8rem; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cinza);
+  color: var(--texto);
+  min-height: 100vh;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 20px;
-        }
+/* ── HEADER ── */
+.topbar {
+  background: var(--navy);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
 
-        /* Filtros */
-        .filters {
-            background: var(--branco);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            display: flex;
-            gap: 15px;
-            margin-top: -30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            border: 1px solid #e1e8ed;
-        }
+.topbar-logo {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--azul);
+  letter-spacing: -.4px;
+  white-space: nowrap;
+}
+.topbar-logo span { color: #fff; }
 
-        .filters input, .filters select {
-            flex: 1;
-            min-width: 200px;
-            padding: 12px;
-            border: 2px solid #e1e8ed;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
+.topbar-sep {
+  width: 1px; height: 24px;
+  background: rgba(255,255,255,.15);
+}
 
-        .filters input:focus, .filters select:focus {
-            border-color: var(--azul-claro);
-        }
+.topbar-sub {
+  font-size: .72rem;
+  color: rgba(255,255,255,.4);
+  line-height: 1.4;
+}
 
-        /* Grid e Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
+.topbar-badge {
+  margin-left: auto;
+  background: rgba(0,201,235,.12);
+  border: 1px solid rgba(0,201,235,.3);
+  color: var(--azul);
+  font-size: .7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
 
-        .card {
-            background: var(--branco);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            border-top: 6px solid var(--azul-claro);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-        }
+/* ── LAYOUT ── */
+.page {
+  max-width: 1280px;
+  margin: auto;
+  padding: 28px 24px 72px;
+}
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+/* ── FILTRO PRINCIPAL ── */
+.hero-filter {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  box-shadow: 0 8px 24px rgba(0,34,51,.25);
+}
 
-        .card h3 {
-            margin: 15px 0;
-            color: var(--ciano-escuro);
-            font-size: 1.3rem;
-            line-height: 1.2;
-        }
+.hero-label {
+  flex-shrink: 0;
+}
 
-        .tag-group { margin-bottom: 10px; }
+.hero-label p {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  color: var(--azul);
+  margin-bottom: 6px;
+}
 
-        .tag {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-right: 5px;
-        }
+.hero-label h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
 
-        .tag-segmento { background: var(--roxo); color: white; }
-        .tag-produto { background: var(--laranja); color: white; }
+.hero-select-wrap {
+  flex: 1;
+  min-width: 240px;
+  position: relative;
+}
 
-        .content-box {
-            background: #f9fafb;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 14px;
-            border-left: 4px solid #ddd;
-        }
+.hero-select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--azul);
+  pointer-events: none;
+  font-size: .85rem;
+}
 
-        .desafio { border-left-color: var(--rosa); }
-        .solucao { border-left-color: var(--azul-claro); }
+#filter-produto-atual {
+  width: 100%;
+  padding: 14px 44px 14px 18px;
+  border: 2px solid rgba(0,201,235,.4);
+  border-radius: 10px;
+  background: rgba(0,201,235,.07);
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 600;
+  font-family: inherit;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  transition: border-color .2s, background .2s;
+}
 
-        .link-btn {
-            margin-top: auto;
-            text-align: center;
-            background: var(--azul-claro);
-            color: var(--ciano-escuro);
-            text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: opacity 0.2s;
-        }
+#filter-produto-atual option { background: var(--navy2); color: #fff; }
 
-        .link-btn:hover { opacity: 0.8; }
+#filter-produto-atual:focus {
+  border-color: var(--azul);
+  background: rgba(0,201,235,.12);
+}
 
-        #loading { text-align: center; font-weight: bold; padding: 50px; }
-    </style>
+/* ── FILTROS SECUNDÁRIOS ── */
+.secondary-filters {
+  background: var(--branco);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.sf-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.sf-group label {
+  font-size: .67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--suave);
+}
+
+.sf-group select,
+.sf-group input {
+  padding: 9px 12px;
+  border: 1.5px solid var(--borda);
+  border-radius: 8px;
+  font-size: .83rem;
+  font-family: inherit;
+  color: var(--texto);
+  background: var(--branco);
+  outline: none;
+  appearance: none;
+  transition: border-color .2s;
+  cursor: pointer;
+}
+
+.sf-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a7080' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.sf-group select:focus,
+.sf-group input:focus {
+  border-color: var(--azul2);
+}
+
+/* ── STATUS BAR ── */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.status-count {
+  font-size: .8rem;
+  color: var(--suave);
+}
+.status-count strong { color: var(--texto); }
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(0,201,235,.1);
+  border: 1px solid rgba(0,201,235,.3);
+  color: var(--navy);
+  font-size: .73rem;
+  font-weight: 600;
+  padding: 5px 13px;
+  border-radius: 20px;
+}
+
+.status-pill .dot {
+  width: 7px; height: 7px;
+  background: var(--azul);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--branco);
+  border-radius: 14px;
+  border: 1px solid var(--borda);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+  transition: transform .18s, box-shadow .18s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.1);
+}
+
+/* barra colorida de acordo com combo de produtos */
+.card-top-bar {
+  height: 4px;
+}
+
+.card-body {
+  padding: 18px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* flow de produtos */
+.prod-flow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: .67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+  line-height: 1;
+}
+
+.chip-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* produto que o cliente já tem */
+.chip-owned {
+  background: rgba(0,201,235,.12);
+  color: #006f80;
+  border: 1px solid rgba(0,201,235,.35);
+}
+.chip-owned .chip-dot { background: var(--azul); }
+
+/* próximo produto (expansão) */
+.chip-next {
+  background: rgba(163,77,255,.1);
+  color: #6a1fc0;
+  border: 1px solid rgba(163,77,255,.3);
+}
+.chip-next .chip-dot { background: var(--roxo); }
+
+/* sem filtro: todos neutros */
+.chip-neutral {
+  background: #f0f4f8;
+  color: var(--suave);
+  border: 1px solid var(--borda);
+}
+.chip-neutral .chip-dot { background: var(--suave); }
+
+.flow-arrow {
+  font-size: .75rem;
+  color: var(--suave);
+  flex-shrink: 0;
+}
+
+/* título e segmento */
+.card-seg {
+  font-size: .66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--suave);
+}
+
+.card h3 {
+  font-size: .97rem;
+  font-weight: 700;
+  color: var(--texto);
+  line-height: 1.35;
+}
+
+/* caixas de conteúdo */
+.box {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: .78rem;
+  line-height: 1.55;
+  color: var(--texto);
+  border-left: 3px solid transparent;
+}
+
+.box-label {
+  font-size: .63rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.box-desafio { border-left-color: var(--rosa); }
+.box-desafio .box-label { color: var(--rosa); }
+
+.box-solucao { border-left-color: var(--verde); }
+.box-solucao .box-label { color: var(--verde); }
+
+/* rodapé */
+.card-footer {
+  padding: 12px 20px;
+  border-top: 1px solid var(--borda);
+}
+
+.btn-case {
+  display: block;
+  text-align: center;
+  background: var(--navy);
+  color: var(--branco);
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: .8rem;
+  font-weight: 600;
+  transition: background .18s;
+}
+
+.btn-case:hover { background: var(--azul2); }
+
+/* ── EMPTY ── */
+.empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--suave);
+  font-size: .9rem;
+}
+
+.empty .ei { font-size: 2.2rem; margin-bottom: 10px; }
+
+/* ── LOADING ── */
+.loading {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px;
+  color: var(--suave);
+  font-size: .88rem;
+}
+
+@media (max-width: 640px) {
+  .hero-filter { flex-direction: column; gap: 14px; }
+  .hero-label h2 { white-space: normal; }
+  .grid { grid-template-columns: 1fr; }
+  .topbar-sub { display: none; }
+}
+</style>
 </head>
 <body>
 
-<header>
-    <h1>🚀 Repositório de Casos de Uso dos Clientes RD</h1>
+<header class="topbar">
+  <div class="topbar-logo">RD Station <span>/ Cases de Uso</span></div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-sub">Identifique o próximo produto do cliente em calls</div>
+  <div class="topbar-badge" id="topbar-badge">Carregando...</div>
 </header>
 
-<div class="container">
-    <div class="filters">
-        <input type="text" id="search" placeholder="🔍 Buscar por título ou palavra-chave...">
-        <select id="filter-segmento"><option value="">🏢 Todos os Segmentos</option></select>
-        <select id="filter-produto"><option value="">🛠️ Todos os Produtos</option></select>
-    </div>
+<div class="page">
 
-    <div id="container" class="grid">
-        <div id="loading">Buscando casos de uso...</div>
+  <!-- Filtro principal -->
+  <div class="hero-filter">
+    <div class="hero-label">
+      <p>Passo 1 — comece aqui</p>
+      <h2>Qual produto o cliente já tem?</h2>
     </div>
+    <div class="hero-select-wrap">
+      <select id="filter-produto-atual">
+        <option value="">Selecione o produto do cliente...</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filtros secundários -->
+  <div class="secondary-filters">
+    <div class="sf-group">
+      <label>Segmento do cliente</label>
+      <select id="filter-segmento">
+        <option value="">Todos os segmentos</option>
+      </select>
+    </div>
+    <div class="sf-group">
+      <label>Busca por palavra-chave</label>
+      <input type="text" id="search" placeholder="Ex: WhatsApp, leads frios, automação...">
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="status-bar">
+    <div class="status-count" id="status-count"></div>
+    <div id="status-pill"></div>
+  </div>
+
+  <!-- Cards -->
+  <div class="grid" id="grid">
+    <div class="loading">⏳ Carregando casos de uso...</div>
+  </div>
+
 </div>
 
 <script>
-    const CSV_URL = 'dados.csv';
-    let allData = [];
+// ── Dados embutidos direto da planilha ──
+const RAW = [{"Segmento":"Informação não encontrada nos comentários","Título":"Organizar leads com etiquetas e segmentação","Desafio Inicial":"O usuário precisa organizar e direcionar leads de forma eficiente para diferentes áreas ou fluxos de trabalho com base em seus interesses ou ações.","Solução usada":"Utilizar etiquetas (tags) no RD Station Conversas e vincular cada etiqueta a uma segmentação específica para que os leads sejam automaticamente direcionados para a categoria correta.","Produto usado":"RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002Uw2KV"},{"Segmento":"Informação não encontrada nos comentários","Título":"Uso do WhatsApp para negócios consultivos","Desafio Inicial":"Acelerar o ciclo de vendas consultivas e manter o engajamento de leads em jornadas longas.","Solução usada":"Integração do WhatsApp ao RD CRM e RD Marketing para automatizar mensagens baseadas na movimentação do funil e no comportamento do lead.","Produto usado":"RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001J2OMZKA3"},{"Segmento":"Informação não encontrada nos comentários","Título":"CRM para prever e evitar churn","Desafio Inicial":"A empresa só reage ao churn quando o cliente já decidiu sair, perdendo a oportunidade de reverter a situação.","Solução usada":"Utilizar o RD Station CRM para criar campos personalizados (risco de churn, engajamento) e configurar automações para gerar tarefas e alertas para as equipes de CS e financeiro.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002GDyTn"},{"Segmento":"Informação não encontrada nos comentários","Título":"Facilitar filtro de clientes no RD Station CRM","Desafio Inicial":"Dificuldade em filtrar e localizar clientes na tela do RD Station CRM de forma ágil, levando a esquecimento de alguns contatos.","Solução usada":"Utilizar a funcionalidade de segmentação (através de etiquetas) no RD Station CRM para facilitar a filtragem de clientes pelos consultores.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002Uw2KV"},{"Segmento":"Informação não encontrada nos comentários","Título":"Reativar Leads Frios com Machine Learning","Desafio Inicial":"Reativar leads frios de forma eficiente e com maior taxa de conversão, otimizando custos em relação à aquisição de novos leads.","Solução usada":"Utilizar machine learning para identificar padrões de comportamento dos leads frios, segmentá-los e personalizar a comunicação para reativação.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002b1dzq"},{"Segmento":"Imobiliário","Título":"Otimização de Pipeline e Performance em Imobiliária","Desafio Inicial":"Coordenador recém-contratado precisa identificar quais vendedores têm melhor desempenho e avaliar a saúde do pipeline de vendas para atingir metas mensais.","Solução usada":"Auditoria dos dados do CRM, análise de relatórios de funil com taxa de conversão por etapa, dashboard em Data Studio com alertas automáticos.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002b2EmZ"},{"Segmento":"Informação não encontrada nos comentários","Título":"Recorrência de visitas a clientes com CRM","Desafio Inicial":"Organizar a recorrência de visitas presenciais para diferentes perfis de clientes ao longo do ano sem falhas manuais.","Solução usada":"Criação de automações de marketing para disparar e-mails de aviso e agendamento automático de tarefas no RD Station CRM.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000012QBq0KAG"},{"Segmento":"Informação não encontrada nos comentários","Título":"Campos monetários no CRM para margem de lucro","Desafio Inicial":"Monitorar margens de lucro e custos por produto diretamente no CRM, funcionalidade não nativa da plataforma.","Solução usada":"Criação de campos personalizados no RD Station CRM integrados a planilhas externas via Pluga ou Zapier para calcular margem automaticamente.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001e8rYFKAY"},{"Segmento":"E-commerce","Título":"Fluxos de automação segmentados trazem mais resultado?","Desafio Inicial":"Aumentar o faturamento e a recorrência de vendas em um e-commerce esotérico que utilizava comunicações genéricas.","Solução usada":"Implementação de fluxos de nutrição microsegmentados no RD Station Marketing baseados no interesse específico e histórico de compra.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001dwWTjKAM"},{"Segmento":"Agro","Título":"WhatsApp integrado para atendimento e qualificação no Agro","Desafio Inicial":"Escalar o atendimento e a qualificação de leads no agronegócio, reduzindo o Tempo Médio de Espera. Processos manuais de prospecção e perda de oportunidades no CRM.","Solução usada":"Implementação de Agentes de IA e Bots integrados ao RD Station Marketing e CRM para automatizar a qualificação, distribuição por DDD e cadência comercial.","Produto usado":"RD Station CRM, RD Station Conversas, RD Mentor IA","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200000x1qw8KAA"},{"Segmento":"Informação não encontrada nos comentários","Título":"Gerenciamento de Negócios e Ciclos Mensais no CRM","Desafio Inicial":"Como gerenciar a movimentação de negócios após serem marcados como ganhos/perdidos e criar novos negócios para ciclos mensais.","Solução usada":"Criar um novo negócio para cada ciclo mensal via automação no RD Station Marketing ou funil específico para renovação.","Produto usado":"RD Station CRM, RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/"},{"Segmento":"Serviços (Consultoria de Marketing)","Título":"Integração de Marketing e Vendas com RD","Desafio Inicial":"Integrar o time comercial nas ações de marketing para manter consistência nos resultados e melhorar a qualificação de leads.","Solução usada":"Implementou primeiros produtos RD Station, planeja capacitar times de vendas, criar automações integradas ao WhatsApp e usar IA para qualificar leads.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002F443U"},{"Segmento":"Informação não encontrada nos comentários","Título":"Integração Avançada Hotmart com RD","Desafio Inicial":"Integrar leads da Hotmart ao RD Station, mas queria ir além da integração nativa, buscando também dados de pagamento e abandono de carrinho.","Solução usada":"Utilização do Make.com para criar integração avançada entre Hotmart e RD Station com webhooks e tags específicas.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002RsQxt"},{"Segmento":"Informação não encontrada nos comentários","Título":"Web Push: Engajamento Rápido e Direto","Desafio Inicial":"Busca de canal direto e rápido para engajar visitantes e leads, impulsionar o retorno e a conversão sem depender de e-mail ou mídia paga.","Solução usada":"Liberação do Web Push no RD Station Marketing para envio de notificações curtas com título, texto e link clicável mesmo após o visitante sair do site.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com.br/web-push"},{"Segmento":"Saúde","Título":"Reaquecer Base com Baixo Engajamento","Desafio Inicial":"Reaquecer uma base de leads com baixo engajamento e vendas estagnadas em um mercado de ciclo longo como o de saúde.","Solução usada":"Estratégia em fases: limpeza da base, sequência de reengajamento com emails consultivos, fluxo quente automático e qualificação por SDR para leads interagentes.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002TwU4v"},{"Segmento":"Informação não encontrada nos comentários","Título":"Estratégias de Black Friday para B2B","Desafio Inicial":"Aproveitar a sazonalidade da Black Friday em mercados B2B onde o ciclo de venda é mais complexo.","Solução usada":"Campanhas de desconto em mensalidades iniciais integradas ao RD Station Marketing e régua de nutrição automatizada para leads não convertidos.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200000eo9uEKAQ"},{"Segmento":"Informação não encontrada nos comentários","Título":"Gatilhos eficientes em automações com Lead Tracking","Desafio Inicial":"Identificar o momento ideal e o interesse específico de leads que já navegam no site mas ainda não converteram em materiais ricos.","Solução usada":"Automações baseadas em Lead Tracking e segmentação por páginas visitadas, com priorização de leads de fundo de funil para pré-vendas.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000019lgwrKAA"},{"Segmento":"Informação não encontrada nos comentários","Título":"RD Station Marketing para Branding B2B2C","Desafio Inicial":"Manter a marca presente na mente do consumidor em modelos B2B2C (indústrias), onde não há venda direta.","Solução usada":"Jornadas de relacionamento contínuo via fluxos de automação e segmentações para alimentar públicos personalizados em mídias pagas.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001DD1zJKAT"},{"Segmento":"Informação não encontrada nos comentários","Título":"Como criam os emails no RD Station Marketing","Desafio Inicial":"Superar baixas taxas de cliques e falta de engajamento causados por envios genéricos para toda a base.","Solução usada":"Microsegmentação para enviar conteúdos por interesse específico, com CTAs na primeira dobra, cores contrastantes e testes em modo noturno.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001cd913KAA"},{"Segmento":"Informação não encontrada nos comentários","Título":"Higienização e Reindexação de Base de Emails","Desafio Inicial":"Deterioração da reputação de domínio e entregabilidade de e-mails por falta de higienização da base de leads.","Solução usada":"Implementar disciplina na limpeza de base pelo menos duas vezes ao ano com campos bem preenchidos, tags com significado e rotinas de quarentena.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ly4ga"},{"Segmento":"Educação","Título":"Crescimento de matrículas com RD Marketing","Desafio Inicial":"Necessidade de expansão em diversas modalidades de ensino (semipresencial, presencial e EAD).","Solução usada":"Landing pages para captação, segmentação de informações, fluxos automatizados de aquecimento e comunicação de novas condições. Resultado: +42% geral, +135% semipresencial.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002uU1dw"},{"Segmento":"Educação","Título":"WhatsApp: Otimizar uso e reduzir custos na Educação","Desafio Inicial":"Otimizar o uso do WhatsApp na jornada do aluno, identificando em qual etapa é mais eficaz e evitando gastos desnecessários.","Solução usada":"WhatsApp apenas em etapas avançadas do funil (score alto, visita à página de matrícula). Bot no RD Station Conversas qualifica e direciona para consultor.","Produto usado":"RD Station Marketing e RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ndNhv"},{"Segmento":"Informação não encontrada nos comentários","Título":"Integração RD: Marketing e Conversas","Desafio Inicial":"Perda de histórico de negociação e experiência desconexa entre Marketing e Vendas pelo uso de planilhas e WhatsApp pessoal.","Solução usada":"Integração entre RD Station Marketing e RD Station Conversas para padronizar atendimento, garantir histórico ao vendedor e eliminar planilhas.","Produto usado":"RD Station Marketing e RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ndOmG"},{"Segmento":"Manufatura","Título":"Usar RD Marketing para trabalhar oportunidades perdidas no CRM","Desafio Inicial":"Desperdício de leads sem perfil para associação imediata, resultando em perda de receita e baixo alcance de mercado.","Solução usada":"Integração entre RD Station Marketing e CRM para segmentar perdas por motivo e criar fluxos de automação para nutrir leads com workshops e eventos.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000014GmQrKAK"},{"Segmento":"Informação não encontrada nos comentários","Título":"Automação de e-mail por vendedor responsável","Desafio Inicial":"Personalizar o envio de e-mails automáticos para que o remetente seja o vendedor responsável, não um endereço genérico.","Solução usada":"Variáveis de personalização e configurações de Responsável pelo Lead nas automações do RD Station Marketing para disparo em nome de diferentes vendedores.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000013pcK9KAI"},{"Segmento":"Informação não encontrada nos comentários","Título":"Qualificar lead com estrelas e acionar WhatsApp automaticamente","Desafio Inicial":"Acionar automaticamente o time de atendimento via WhatsApp sempre que um lead fosse qualificado com 4 ou 5 estrelas no CRM.","Solução usada":"Segmentação por critérios de estrelas e fluxo de automação no RD Marketing que envia leads automaticamente ao RD Conversas para abordagem imediata.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200001gMTubKAG"},{"Segmento":"Clínica de estética","Título":"Automação para Captação de Leads no Google","Desafio Inicial":"A conversão de leads do Google Ads se perdia no meio do caminho pela demora na chegada do contato ao CRM.","Solução usada":"Integração Google Lead Ads com RD Station Marketing para leads caírem automaticamente no RD, acionando fluxo de e-mail e SMS de confirmação.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D52000008H5vTzCAI"},{"Segmento":"Saúde","Título":"Reaquecer base com estratégia e automação","Desafio Inicial":"Reaquecer uma base de leads com baixo engajamento e vendas estagnadas, identificando leads com real intenção de compra em ciclo longo.","Solução usada":"Higienização e reclassificação da base, reaquecimento com conteúdo educativo e integração entre Marketing e Comercial com gatilhos de intenção.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002TwU4v"},{"Segmento":"Imobiliário","Título":"Aquecimento de leads com lead scoring comportamental","Desafio Inicial":"O modelo linear de aquecimento de leads com 3 e-mails semanais resultava em leads frios para o time de vendas, prejudicando a conversão de alto ticket.","Solução usada":"Lead scoring comportamental no RD Station para pontuar engajamento e definir threshold de envio ao CRM, com fluxos dinâmicos e ramificados por comportamento.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002bFQoS"},{"Segmento":"Informação não encontrada nos comentários","Título":"ABM: Foco em Contas Estratégicas","Desafio Inicial":"Gerar leads de forma massiva sem focar nas contas certas, buscando fechar contratos maiores e parar de depender só de volume.","Solução usada":"Account-Based Marketing com IA para definição de ICP, campanhas personalizadas no RD Marketing e acompanhamento de performance.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002i4dJt"},{"Segmento":"Turismo","Título":"Redução do ciclo de vendas com RD Station","Desafio Inicial":"Time comercial sobrecarregado por leads frios, tornando o ciclo de vendas excessivamente longo.","Solução usada":"Integração de Marketing, CRM e Conversas com qualificação automatizada via lead scoring e automações de WhatsApp para o time focar em oportunidades reais.","Produto usado":"RD Station Marketing, RD Station CRM e RD Station Conversas","Link do Post":"https://rdstation.com/cases-de-sucesso/vivala-turismo/"},{"Segmento":"Informação não encontrada nos comentários","Título":"Integração RD APIs com IA (Manus AI)","Desafio Inicial":"Necessidade de integrar produtos RD com a ferramenta Manus AI para otimizar tarefas com inteligência artificial.","Solução usada":"Utilizar as APIs do RD Station Marketing, CRM e Conversas para integrar com o Manus AI.","Produto usado":"RD Station Marketing, RD Station CRM, RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002vZ2Db"},{"Segmento":"Educação","Título":"Contato imediato e humanizado com futuros acadêmicos","Desafio Inicial":"Necessidade de contato mais imediato e humanizado com futuros acadêmicos, garantindo que nenhum lead seja perdido no fluxo de nutrição.","Solução usada":"API oficial do WhatsApp integrada ao RD. Leads captados via LP entram no CRM educacional. Se não interagem em 2 dias, consultor faz contato via API do WhatsApp.","Produto usado":"RD Station Marketing, RD Station CRM, RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000034Dw4a"},{"Segmento":"Educação","Título":"WhatsApp Estratégico na Jornada do Aluno","Desafio Inicial":"Como escalar o uso do WhatsApp para nutrição de leads sem aumentar o orçamento, utilizando o canal de forma estratégica nas etapas certas.","Solução usada":"Usar WhatsApp como ferramenta pós-qualificação para leads quentes, após passarem por qualificação inicial com RD Marketing e CRM.","Produto usado":"RD Station Marketing, RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ndNhv"},{"Segmento":"Educação","Título":"Otimização de Captação com Landing Pages","Desafio Inicial":"Otimizar a captação de leads para campanhas online e offline, direcionando tráfego e oferecendo informações claras aos candidatos.","Solução usada":"Landing pages do RD Marketing segmentadas por modalidade, com integração ao CRM Educacional para fluxos automatizados de e-mail.","Produto usado":"RD Station Marketing, RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/feed/0D5V200002uU1dwKAC"},{"Segmento":"Informação não encontrada nos comentários","Título":"Baixa produtividade e perda de controle na gestão de leads","Desafio Inicial":"Leads gerados por email gerenciados em planilhas e abordados via WhatsApp pessoal, gerando falta de visibilidade e perda de histórico.","Solução usada":"Fluxo integrado entre RD Station Marketing e RD Station Conversas com passagem de bastão baseada em qualificação e contexto ao vendedor.","Produto usado":"RD Station Marketing, RD Station Conversas","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ndOmG"},{"Segmento":"Informação não encontrada nos comentários","Título":"Integração RD Marketing e Conversas via CRM","Desafio Inicial":"Marketing gera leads por e-mail com dados passados manualmente para planilha, vendedor aborda via WhatsApp pessoal — falta visibilidade e histórico.","Solução usada":"Integração RD Station Marketing + Conversas + CRM para padronizar atendimento, garantir histórico e proporcionar experiência integrada ao lead.","Produto usado":"RD Station Marketing, RD Station Conversas, RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002ndOmG"},{"Segmento":"Informação não encontrada nos comentários","Título":"Atualizações no CRM em tempo real via Conversas","Desafio Inicial":"Muito tempo desperdiçado alternando entre plataformas apenas para manter o CRM atualizado a cada nova interação.","Solução usada":"Atualização de informações de oportunidades diretamente no RD Station Conversas, editando negociações e enviando mensagens ao histórico do CRM sem sair da conversa.","Produto usado":"RD Station Conversas e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000039mDmI"},{"Segmento":"Viagens","Título":"Reengaje Contatos Inativos com Automações","Desafio Inicial":"Reengajar contatos inativos que não abriam os e-mails há algum tempo em segmento de viagens.","Solução usada":"Estratégia de reengajamento combinando lead scoring, materiais ricos (checklists de viagem), web push e SMS em momentos próximos à compra.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200003CBTeH"},{"Segmento":"B2B de tecnologia/serviços","Título":"Transforme Leads 'Lost' em Vendas Futuras","Desafio Inicial":"Leads que não estão no momento de compra são movidos para 'Lost', resultando em marketing pagando por novos leads e perda de oportunidades futuras.","Solução usada":"Fluxo de reengajamento com status 'adiado com data' no CRM. Sistema dispara e-mail no dia seguinte, envia conteúdo mensalmente e cria tarefa 7 dias antes da data prometida.","Produto usado":"RD Station Marketing e RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200003IkDUX"},{"Segmento":"Informação não encontrada nos comentários","Título":"Automatize seu CRM com IA e n8n","Desafio Inicial":"O preenchimento manual de CRM consome tempo precioso e informações sobre reuniões comerciais se perdem.","Solução usada":"Automação no n8n que pega transcrição do Tactiq, envia para Claude IA gerar resumo executivo e atualiza a timeline do RD Station CRM automaticamente.","Produto usado":"RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200003HnWgP"},{"Segmento":"Esteticistas e clínicas","Título":"Reengajamento de Leads Desengajados","Desafio Inicial":"Estruturar um projeto de reengajamento de leads que não converteram, otimizando a entregabilidade e métricas.","Solução usada":"Segmentação para leads desengajados, reestabelecer conversa com conteúdo rico, WhatsApp como segundo passo e e-mail de saída da base para higienização.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000038bFam"},{"Segmento":"Informação não encontrada nos comentários","Título":"Otimizar CRM com campos customizados e Outbound","Desafio Inicial":"Tratamento genérico de leads no CRM sem personalização por nível de interesse ou tipo de interação.","Solução usada":"Campos customizados no CRM (Nível de Interesse, Última Interação, Motivo da Próxima Ligação) com integração de cadências de email e LinkedIn via RD Marketing.","Produto usado":"RD Station CRM, RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000032bQMy"},{"Segmento":"Imobiliário","Título":"Aquecimento de Leads: Comportamento vs Calendário","Desafio Inicial":"Leads chegavam frios mesmo com automações rodando — modelo linear de e-mails não preparava o lead para compra de alto valor.","Solução usada":"Critério de passagem baseado no comportamento: cliques em CTAs estratégicos, consumo recorrente de conteúdo e interação com temas específicos.","Produto usado":"RD Station Marketing, RD Station CRM","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V200002bFQoS"},{"Segmento":"Informação não encontrada nos comentários","Título":"Nutrição de leads inteligente com RD Station","Desafio Inicial":"Melhorar a nutrição de leads com fluxos mais inteligentes, aumentando taxas de abertura e clique e reduzindo leads mortos.","Solução usada":"Fluxos de nutrição com condições de espera e ramificações por comportamento real, combinando lead scoring dinâmico, tags automáticas e IA para personalização.","Produto usado":"RD Station Marketing","Link do Post":"https://rdconectacomunidade.rdstation.com/s/question/0D5V2000031My4v"}];
 
-    Papa.parse(CSV_URL, {
-        download: true,
-        header: true,
-        complete: function(results) {
-            // Filtra linhas vazias
-            allData = results.data.filter(row => row.Título && row.Título.trim() !== "");
-            renderFilters(allData);
-            renderCards(allData);
-        }
-    });
+// ── Normalizar produtos do campo "Produto usado" ──
+function parseProdutos(str) {
+  if (!str) return [];
+  return str
+    .split(/,\s*|\s+e\s+/)
+    .map(p => p.trim())
+    .filter(Boolean);
+}
 
-    function renderFilters(data) {
-        const segmentos = [...new Set(data.map(item => item.Segmento).filter(Boolean))];
-        const produtos = [...new Set(data.map(item => item['Produto usado']).filter(Boolean))];
-        
-        const segSelect = document.getElementById('filter-segmento');
-        const prodSelect = document.getElementById('filter-produto');
+// Lista canônica dos 4 produtos
+const PRODUTOS_CANONICOS = [
+  'RD Station Marketing',
+  'RD Station CRM',
+  'RD Station Conversas',
+  'RD Mentor IA'
+];
 
-        segmentos.forEach(val => segSelect.innerHTML += `<option value="${val}">${val}</option>`);
-        produtos.forEach(val => prodSelect.innerHTML += `<option value="${val}">${val}</option>`);
+// Mapeia cada string parcial para o produto canônico
+function normalizarProduto(p) {
+  if (/marketing/i.test(p))  return 'RD Station Marketing';
+  if (/crm/i.test(p))        return 'RD Station CRM';
+  if (/convers/i.test(p))    return 'RD Station Conversas';
+  if (/mentor|ia/i.test(p))  return 'RD Mentor IA';
+  return p;
+}
+
+// Prepara os dados
+const DATA = RAW
+  .filter(r => r.Título && r.Título.trim())
+  .map(r => ({
+    ...r,
+    produtos: [...new Set(parseProdutos(r['Produto usado']).map(normalizarProduto))]
+  }));
+
+// Segmentos limpos
+const SEG_IGNORADOS = ['informação não encontrada nos comentários','essa informação não foi encontrada',''];
+function segValido(s) {
+  return s && !SEG_IGNORADOS.includes(s.toLowerCase().trim());
+}
+
+// ── Preenche selects ──
+function preencherFiltros() {
+  const segSelect = document.getElementById('filter-segmento');
+  const prodSelect = document.getElementById('filter-produto-atual');
+
+  PRODUTOS_CANONICOS.forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    prodSelect.appendChild(o);
+  });
+
+  const segs = [...new Set(DATA.map(r => r.Segmento).filter(segValido))].sort();
+  segs.forEach(s => {
+    const o = document.createElement('option');
+    o.value = s; o.textContent = s;
+    segSelect.appendChild(o);
+  });
+}
+
+// ── Cores da barra do card ──
+function corBarra(produtos) {
+  if (produtos.length === 1) {
+    if (produtos[0] === 'RD Station Marketing')  return '#00c9eb';
+    if (produtos[0] === 'RD Station CRM')         return '#a34dff';
+    if (produtos[0] === 'RD Station Conversas')   return '#00c48c';
+    if (produtos[0] === 'RD Mentor IA')           return '#ff8900';
+  }
+  return 'linear-gradient(90deg,#00c9eb,#a34dff)';
+}
+
+// ── Renderizar ──
+function render() {
+  const prodAtual = document.getElementById('filter-produto-atual').value;
+  const segmento  = document.getElementById('filter-segmento').value;
+  const busca     = document.getElementById('search').value.toLowerCase();
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  const filtrados = DATA.filter(r => {
+    const matchProd = !prodAtual || r.produtos.includes(prodAtual);
+    const matchSeg  = !segmento  || r.Segmento === segmento;
+    const matchBusca = !busca ||
+      r.Título.toLowerCase().includes(busca) ||
+      (r['Desafio Inicial'] || '').toLowerCase().includes(busca) ||
+      (r['Solução usada'] || '').toLowerCase().includes(busca);
+    return matchProd && matchSeg && matchBusca;
+  });
+
+  // status
+  document.getElementById('topbar-badge').textContent =
+    `${filtrados.length} caso${filtrados.length !== 1 ? 's' : ''}`;
+  document.getElementById('status-count').innerHTML =
+    `<strong>${filtrados.length}</strong> caso${filtrados.length !== 1 ? 's' : ''} encontrado${filtrados.length !== 1 ? 's' : ''} de ${DATA.length}`;
+
+  const pillEl = document.getElementById('status-pill');
+  pillEl.innerHTML = prodAtual
+    ? `<span class="status-pill"><span class="dot"></span>Expandindo a partir de: ${prodAtual}</span>`
+    : '';
+
+  if (filtrados.length === 0) {
+    grid.innerHTML = `<div class="empty"><div class="ei">🔍</div><p>Nenhum caso encontrado para essa combinação.</p></div>`;
+    return;
+  }
+
+  filtrados.forEach(r => {
+    const outros = prodAtual
+      ? r.produtos.filter(p => p !== prodAtual)
+      : [];
+
+    // chips
+    let chips = '';
+    if (prodAtual && r.produtos.includes(prodAtual)) {
+      chips += `<span class="chip chip-owned"><span class="chip-dot"></span>${prodAtual}</span>`;
+      if (outros.length) {
+        chips += `<span class="flow-arrow">→</span>`;
+        chips += outros.map(p =>
+          `<span class="chip chip-next"><span class="chip-dot"></span>${p}</span>`
+        ).join('<span class="flow-arrow">+</span>');
+      }
+    } else {
+      chips = r.produtos.map(p =>
+        `<span class="chip chip-neutral"><span class="chip-dot"></span>${p}</span>`
+      ).join('<span class="flow-arrow">·</span>');
     }
 
-    function renderCards(data) {
-        const container = document.getElementById('container');
-        const search = document.getElementById('search').value.toLowerCase();
-        const seg = document.getElementById('filter-segmento').value;
-        const prod = document.getElementById('filter-produto').value;
+    const barra = corBarra(r.produtos);
+    const barraStyle = barra.startsWith('linear')
+      ? `background:${barra}`
+      : `background-color:${barra}`;
 
-        container.innerHTML = '';
+    const segLabel = segValido(r.Segmento)
+      ? `<div class="card-seg">${r.Segmento}</div>` : '';
 
-        const filtered = data.filter(item => {
-            const matchesSearch = item.Título.toLowerCase().includes(search) || 
-                                 item['Desafio Inicial'].toLowerCase().includes(search);
-            const matchesSeg = !seg || item.Segmento === seg;
-            const matchesProd = !prod || item['Produto usado'] === prod;
-            return matchesSearch && matchesSeg && matchesProd;
-        });
+    grid.innerHTML += `
+      <div class="card">
+        <div class="card-top-bar" style="${barraStyle}"></div>
+        <div class="card-body">
+          <div class="prod-flow">${chips}</div>
+          <div>
+            ${segLabel}
+            <h3>${r.Título}</h3>
+          </div>
+          <div class="box box-desafio">
+            <span class="box-label">Desafio</span>
+            ${r['Desafio Inicial'] || ''}
+          </div>
+          <div class="box box-solucao">
+            <span class="box-label">Solução RD</span>
+            ${r['Solução usada'] || ''}
+          </div>
+        </div>
+        <div class="card-footer">
+          <a href="${r['Link do Post'] || '#'}" target="_blank" class="btn-case">Ver case completo →</a>
+        </div>
+      </div>`;
+  });
+}
 
-        if (filtered.length === 0) {
-            container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Nenhum caso encontrado para essa busca. 🔍</p>';
-            return;
-        }
+// ── Init ──
+preencherFiltros();
+render();
 
-        filtered.forEach(item => {
-            container.innerHTML += `
-                <div class="card">
-                    <div class="tag-group">
-                        <span class="tag tag-segmento">${item.Segmento}</span>
-                        <span class="tag tag-produto">${item['Produto usado']}</span>
-                    </div>
-                    <h3>${item.Título}</h3>
-                    
-                    <div class="content-box desafio">
-                        <strong>❌ Desafio:</strong><br>
-                        ${item['Desafio Inicial']}
-                    </div>
-                    
-                    <div class="content-box solucao">
-                        <strong>✅ Solução RD:</strong><br>
-                        ${item['Solução usada']}
-                    </div>
-
-                    <a href="${item['Link do Post']}" target="_blank" class="link-btn">Ler post completo</a>
-                </div>
-            `;
-        });
-    }
-
-    // Eventos para busca em tempo real
-    document.getElementById('search').addEventListener('input', () => renderCards(allData));
-    document.getElementById('filter-segmento').addEventListener('change', () => renderCards(allData));
-    document.getElementById('filter-produto').addEventListener('change', () => renderCards(allData));
+document.getElementById('filter-produto-atual').addEventListener('change', render);
+document.getElementById('filter-segmento').addEventListener('change', render);
+document.getElementById('search').addEventListener('input', render);
 </script>
-
 </body>
 </html>
